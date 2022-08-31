@@ -5,7 +5,7 @@ namespace SmartLease.DTOs;
 
 public class EquipamentoDTO
 {
-    public int IdEquipamento {get;set;}
+    public int EquipamentoId {get;set;}
 
     //botar limite para strings na validação https://docs.microsoft.com/pt-br/aspnet/core/mvc/models/validation?view=aspnetcore-6.0
     [StringLength(100, ErrorMessage = "O nome do equipamento deve ter no máximo 100 caracteres.")]
@@ -20,7 +20,7 @@ public class EquipamentoDTO
 
     public static EquipamentoDTO DeEntidadeParaDTO(Equipamento equipamento) {
       return new EquipamentoDTO {
-        IdEquipamento = equipamento.Id,
+        EquipamentoId = equipamento.Id,
         Nome = equipamento.Nome,
         Descricao = equipamento.Descricao,
         CustoDiario = equipamento.CustoDiario,

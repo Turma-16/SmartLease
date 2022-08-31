@@ -10,12 +10,12 @@ senão, pode excluir e botar a informação de projeto na entidade de funcionari
 */
 public class FuncionarioProjeto {
 
-    public int IdFuncionario {get;set;}
+    public int Id {get;set;}
+    public int FuncionarioId {get;set;}
     public Funcionario Funcionario {get;set;} = null!;
-    public int IdProjeto {get;set;}
+    public int ProjetoId {get;set;}
     public Projeto Projeto {get;set;} = null!;
-    //public boolean Ativo {get;set;}
+    public bool? Ativo {get;set;}
     public DateTime DataSaida {get;set;}
     public DateTime DataEntrada {get;set;}
-    
 }
