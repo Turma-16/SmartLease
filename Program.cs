@@ -9,6 +9,8 @@ builder.Services.AddDbContext<SmartLeaseContext>(opcoes => {
     opcoes.EnableSensitiveDataLogging().LogTo(Console.WriteLine);
 });
 
+builder.Services.AddScoped<IFuncionarioRepo, FuncionarioRepo>();
+builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

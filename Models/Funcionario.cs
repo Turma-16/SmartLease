@@ -1,5 +1,4 @@
 namespace SmartLease.Models;
-using System.ComponentModel.DataAnnotations;
 public class Funcionario {
     public int Id {get;set;}    
     
