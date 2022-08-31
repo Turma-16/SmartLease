@@ -16,6 +16,6 @@ public class FuncionarioProjeto {
     public int ProjetoId {get;set;}
     public Projeto Projeto {get;set;} = null!;
     public bool? Ativo {get;set;}
-    public DateTime DataSaida {get;set;}
+    public DateTime? DataSaida {get;set;}
     public DateTime DataEntrada {get;set;}
 }
