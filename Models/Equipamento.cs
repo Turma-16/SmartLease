@@ -11,4 +11,7 @@ public class Equipamento {
 
     //public ICollection<Reserva> Reservas {get;set;}
     
+    // Criar equipamento
+    // Editar o custo do equipamento
+    // Listar equipamentos
 }
