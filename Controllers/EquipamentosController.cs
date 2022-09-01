@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using SmartLease.Repositories;
 using SmartLease.DTOs;
 using SmartLease.Models;
 
 namespace smartlease.Controllers;
+
 [EnableCors("LiberaGeral")]
 [ApiController]
 [Route("[controller]")]
