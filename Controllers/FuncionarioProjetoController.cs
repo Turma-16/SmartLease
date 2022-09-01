@@ -36,6 +36,22 @@ public class FuncionarioProjetoController : ControllerBase
         return FuncionariosProjetoResponseDTO.DeEntidadeParaDTO(projeto, funcionarios);
     }
 
+    [HttpPut("Desativar")] // GET ..../FuncionarioProjeto/Desativar
+    public async Task<ActionResult<FuncionariosProjetoResponseDTO>> desativarFuncionariosEmProjeto(int projetoId, int funcionarioId) {
+
+        //REFATORAR PQ ISSO TA DUPLICADO NA FUNCAO ABAIXO
+        var projeto = await _IProjetoRepo.buscarPorID(projetoId);
+
+        if(projeto == null) return BadRequest("Projeto não existe na base de dados");
+        
+        var funcionarioProjeto = await _IFuncionarioProjetoRepo.buscarFuncionarioEmProjeto(projeto.Id, funcionarioId);
+
+        funcionarioProjeto.Ativo = false;
+        funcionarioProjeto.DataSaida = DateTime.Now.AddDays(1);
+
+        //return FuncionariosProjetoResponseDTO.DeEntidadeParaDTO(projeto, funcionarios);
+    }
+
     [HttpPost("Cadastrar")] // POST ..../FuncionarioProjeto/Cadastrar
         public async Task<ActionResult<FuncionarioProjetoDTO>> cadastrar(FuncionarioProjetoDTO funcionarioProjetoDTO) {
         FuncionarioProjeto novoFuncionarioProjeto = new FuncionarioProjeto();
@@ -48,7 +64,7 @@ public class FuncionarioProjetoController : ControllerBase
         novoFuncionarioProjeto.FuncionarioId = funcionarioProjetoDTO.FuncionarioId;
         novoFuncionarioProjeto.ProjetoId = funcionarioProjetoDTO.ProjetoId;
         novoFuncionarioProjeto.Ativo = true;
-        novoFuncionarioProjeto.DataEntrada = funcionarioProjetoDTO.DataEntrada;
+        novoFuncionarioProjeto.DataEntrada = DateTime.Now; //TODO rever depois
         novoFuncionarioProjeto.DataSaida = null;
         var resposta = await _IFuncionarioProjetoRepo.cadastrar(novoFuncionarioProjeto);
         
