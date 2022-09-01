@@ -8,5 +8,9 @@ public class Equipamento {
     public string Descricao {get;set;} = null!;
     public decimal CustoDiario {get;set;}
     public ICollection<Reserva>? Reservas {get;set;}
-    
+
+    public override string ToString()
+    {
+        return $"{Id}, {Nome}, {Descricao}, {CustoDiario}";
+    }
 }

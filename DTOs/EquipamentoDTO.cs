@@ -23,7 +23,7 @@ public class EquipamentoDTO
         EquipamentoId = equipamento.Id,
         Nome = equipamento.Nome,
         Descricao = equipamento.Descricao,
-        CustoDiario = equipamento.CustoDiario,
+        CustoDiario = equipamento.CustoDiario
       };
     }
     
