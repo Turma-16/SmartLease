@@ -13,7 +13,7 @@ public FuncionarioProjetoRepo(SmartLeaseContext contexto) {
  public async Task<List<FuncionarioProjeto>> listarFuncionariosEmProjeto (int projetoId) {
     
     var funcionarioprojeto = await _contexto._funcionarios_projetos
-    .Where(funcproj => funcproj.ProjetoId == projetoId).ToListAsync();
+    .Where(funcproj => funcproj.ProjetoId == projetoId).Include("Funcionario").ToListAsync();
     return funcionarioprojeto;
  }
 
