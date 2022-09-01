@@ -35,9 +35,9 @@ public FuncionarioProjetoRepo(SmartLeaseContext contexto) {
     
  }
 
-  public async Task<FuncionarioProjeto?> buscarFuncionarioEmProjeto(int idFuncionario) {
+  public async Task<FuncionarioProjeto?> buscarFuncionarioEmProjeto(int idProjeto,int idFuncionario) {
 
-    var funcionarioProjeto = await _contexto._funcionarios_projetos.Where(funcproj => funcproj.Ativo == true && funcproj.FuncionarioId == idFuncionario)
+    var funcionarioProjeto = await _contexto._funcionarios_projetos.Where(funcproj => funcproj.Ativo == true && funcproj.FuncionarioId == idFuncionario && funcproj.ProjetoId == idProjeto)
                                                                    .FirstOrDefaultAsync();
     return funcionarioProjeto; 
  } 
