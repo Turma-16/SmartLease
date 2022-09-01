@@ -3,6 +3,7 @@ using SmartLease.DTOs;
 using SmartLease.Repositories;
 using SmartLease.Models;
 using SmartLease.Services;
+using System;
 namespace smartlease.Controllers;
 
 [ApiController]
@@ -63,30 +64,21 @@ public class FuncionarioProjetoController : ControllerBase
 
         var funcionario = await _IFuncionarioRepo.buscarPorID(funcionarioProjetoDTO.FuncionarioId);
         if (funcionario == null) return BadRequest("Funcionário não existe na base de dados");
+
         var projeto = await _IProjetoRepo.buscarPorID(funcionarioProjetoDTO.ProjetoId);
         if (projeto == null) return BadRequest("Projeto não existe na base de dados");
 
         var novaDataEntrada = DateTime.Now;
-        var ultimoFuncionarioProjeto = await _IFuncionarioProjetoRepo.buscaUltimoFuncionarioProjeto(funcionario.Id);
+        var errorResponse = await _IFuncionarioProjetoService.verificaProjetosDeFuncionario(funcionario, projeto, novaDataEntrada);
 
-        if(ultimoFuncionarioProjeto != null) {
-            if(ultimoFuncionarioProjeto!.Ativo) {
-                if(ultimoFuncionarioProjeto.ProjetoId == projeto.Id){
-                    return BadRequest("Funcionário já cadastrado neste projeto.");
-                }
-                return BadRequest("Funcionário já cadastrado em outro projeto.");
-            }
-        }
-
-        var ultimaDataSaida = ultimoFuncionarioProjeto?.DataSaida;
-        var dataEntradaValida = _IFuncionarioProjetoService.dataEntradaValida(ultimaDataSaida, novaDataEntrada);
-        if (!dataEntradaValida) return BadRequest("Funcionário não pode entrar em outro projeto no momento.");
+        if(errorResponse != null) return BadRequest(errorResponse);
 
         novoFuncionarioProjeto.FuncionarioId = funcionarioProjetoDTO.FuncionarioId;
         novoFuncionarioProjeto.ProjetoId = funcionarioProjetoDTO.ProjetoId;
         novoFuncionarioProjeto.Ativo = true;
         novoFuncionarioProjeto.DataEntrada = novaDataEntrada;
         novoFuncionarioProjeto.DataSaida = null;
+        
         var resposta = await _IFuncionarioProjetoRepo.cadastrar(novoFuncionarioProjeto);
         
         return FuncionarioProjetoDTO.DeEntidadeParaDTO(resposta);        
