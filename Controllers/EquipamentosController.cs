@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartLease.Repositories;
+using SmartLease.DTOs;
 using SmartLease.Models;
+
 
 namespace smartlease.Controllers;
 
@@ -20,9 +22,10 @@ public class EquipamentoController : ControllerBase
     }
     
     [HttpGet("Listar")] // GET .../Equipamento/Listar
-    public async Task<IEnumerable<Equipamento>> Listar()
+    public async Task<IEnumerable<EquipamentoDTO>> Listar()
     {
-        return await _equipamentoRepo.ListarEquipamentos();
+        var equipamentos = await _equipamentoRepo.ListarEquipamentos();
+        return equipamentos.Select(EquipamentoDTO.DeEntidadeParaDTO).ToList();
     }
 
     [HttpPost("Cadastrar")] // POST .../Equipamento/Cadastrar

@@ -14,7 +14,7 @@ public class EquipamentoRepo : IEquipamentoRepo
 
     public async Task<bool> AlterarCusto(int idEquipamento, decimal novoCusto)
     {   
-        Equipamento? equipamentoEncontrado = await _contexto._equipamentos.FindAsync(1);
+        Equipamento? equipamentoEncontrado = await _contexto._equipamentos.FindAsync(idEquipamento);
         
         if(equipamentoEncontrado == null)
         {
@@ -31,7 +31,6 @@ public class EquipamentoRepo : IEquipamentoRepo
 
     public async Task<bool> CadastrarEquipamento(Equipamento equipamento)
     {
-        
         try{
             await _contexto._equipamentos.AddAsync(equipamento); 
             await _contexto.SaveChangesAsync();
