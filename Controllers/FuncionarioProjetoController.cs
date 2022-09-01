@@ -52,7 +52,7 @@ public class FuncionarioProjetoController : ControllerBase
         novoFuncionarioProjeto.DataSaida = null;
         var resposta = await _IFuncionarioProjetoRepo.cadastrar(novoFuncionarioProjeto);
         
-        return FuncionarioProjetoDTO.DeEntidadeParaDTO(resposta);
-        
+        return FuncionarioProjetoDTO.DeEntidadeParaDTO(resposta);        
     }
+
 }
