@@ -9,8 +9,7 @@ builder.Services.AddDbContext<SmartLeaseContext>(opcoes => {
 
 builder.Services.AddScoped<IFuncionarioRepo, FuncionarioRepo>();
 builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
-builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
-
+builder.Services.AddScoped<IFuncionarioProjetoRepo, FuncionarioProjetoRepo>();
 builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
 
 builder.Services.AddCors(opcoes => {

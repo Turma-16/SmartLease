@@ -20,5 +20,10 @@ public FuncionarioRepo(SmartLeaseContext contexto) {
     await _contexto._funcionarios.AddAsync(funcionario);
     await _contexto.SaveChangesAsync();
     return funcionario;
- }  
+ }
+
+ public async Task<Funcionario?> buscarPorID(int idFuncionario) {
+    var funcionario = await _contexto._funcionarios.FindAsync(idFuncionario);
+    return funcionario;
+ }
 }

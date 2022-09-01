@@ -21,4 +21,9 @@ public ProjetoRepo(SmartLeaseContext contexto) {
     await _contexto.SaveChangesAsync();
     return projeto;
  }  
+  public async Task<Projeto?> buscarPorID(int idProjeto) {
+
+    var projeto = await _contexto._projetos.FindAsync(idProjeto);
+    return projeto;
+ }
 }
