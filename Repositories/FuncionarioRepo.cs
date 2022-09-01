@@ -26,4 +26,5 @@ public FuncionarioRepo(SmartLeaseContext contexto) {
     var funcionario = await _contexto._funcionarios.FindAsync(idFuncionario);
     return funcionario;
  }
+ 
 }

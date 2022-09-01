@@ -15,6 +15,6 @@ public class FuncionariosProjetoResponseDTO {
         Projeto = ProjetoDTO.DeEntidadeParaDTO(projeto),
         Funcionarios = funcionarios != null ? funcionarios.Select(FuncionarioDTO.DeEntidadeParaDTO).ToList() : new List<FuncionarioDTO>(),
       };
-    }
+    }    
 
 }
