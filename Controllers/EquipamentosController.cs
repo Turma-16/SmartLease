@@ -19,10 +19,23 @@ public class EquipamentoController : ControllerBase
         _equipamentoRepo = repo;
     }
     
-    [HttpGet("")] 
-
-    public async Task<IEnumerable<Equipamento>> ListarEquipamentos()
+    [HttpGet("Listar")] // GET .../Equipamento/Listar
+    public async Task<IEnumerable<Equipamento>> Listar()
     {
         return await _equipamentoRepo.ListarEquipamentos();
     }
+
+    [HttpPost("Cadastrar")] // POST .../Equipamento/Cadastrar
+    public async Task<bool> Cadastrar(Equipamento equipamento)
+    {
+        return await _equipamentoRepo.CadastrarEquipamento(equipamento);
+    }
+
+
+    [HttpPost("AlterarCusto")] // POST .../Equipamento/AlterarCusto
+    public async Task<bool> AlterarCusto(Equipamento equipamento)
+    {
+        return await _equipamentoRepo.AlterarCusto(equipamento.Id, equipamento.CustoDiario);
+    }
+
 }

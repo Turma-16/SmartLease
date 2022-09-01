@@ -8,8 +8,9 @@ public class Equipamento {
     public string Descricao {get;set;} = null!;
     public decimal CustoDiario {get;set;}
     public ICollection<Reserva>? Reservas {get;set;}
-    
-    // Criar equipamento
-    // Editar o custo do equipamento
-    // Listar equipamentos
+
+    public override string ToString()
+    {
+        return $"{Id}, {Nome}, {Descricao}, {CustoDiario}";
+    }
 }

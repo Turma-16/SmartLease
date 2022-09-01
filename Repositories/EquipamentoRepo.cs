@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartLease.Models;
 
-using SmartLease.Repositories;
+namespace SmartLease.Repositories;
 
-namespace SmartLease.Controllers;
-
-public class EquipamentoRepo : Controller
+public class EquipamentoRepo : IEquipamentoRepo
 {
     private readonly SmartLeaseContext _contexto;
     
@@ -15,20 +12,22 @@ public class EquipamentoRepo : Controller
         _contexto = contexto;
     }
 
-    public async Task<bool> AlterarCusto(decimal novoCustoDiario, int idEquipamento)
+    public async Task<bool> AlterarCusto(int idEquipamento, decimal novoCusto)
     {   
-        Equipamento? equipamentoEncontrado = await _contexto._equipamentos.FindAsync(idEquipamento);
+        Equipamento? equipamentoEncontrado = await _contexto._equipamentos.FindAsync(1);
         
         if(equipamentoEncontrado == null)
         {
+            Console.WriteLine("Equipamento não encontrado");
             return false;
         }
 
-        equipamentoEncontrado.CustoDiario = novoCustoDiario; 
+        equipamentoEncontrado.CustoDiario = novoCusto; 
         _contexto.SaveChanges();
 
         return true;
     }
+
 
     public async Task<bool> CadastrarEquipamento(Equipamento equipamento)
     {

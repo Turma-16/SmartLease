@@ -11,6 +11,8 @@ builder.Services.AddDbContext<SmartLeaseContext>(opcoes => {
 
 builder.Services.AddScoped<IFuncionarioRepo, FuncionarioRepo>();
 builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
+builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
