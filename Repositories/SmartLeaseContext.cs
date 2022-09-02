@@ -9,6 +9,7 @@ public class SmartLeaseContext : DbContext
     public DbSet<Equipamento> _equipamentos {get;set;} = null!;
     public DbSet<Projeto> _projetos {get;set;} = null!;
     public DbSet<FuncionarioProjeto> _funcionarios_projetos {get;set;} = null!;
+    public DbSet<Reserva> _reservas {get;set;} = null!;
     public SmartLeaseContext()
     {
         

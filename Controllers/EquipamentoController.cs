@@ -37,9 +37,10 @@ public class EquipamentoController : ControllerBase
 
 
     [HttpPost("AlterarCusto")] // POST .../Equipamento/AlterarCusto
-    public async Task<bool> AlterarCusto(Equipamento equipamento)
+    public async Task<bool> AlterarCusto(EquipamentoDTO equipamento)
     {
-        return await _equipamentoRepo.AlterarCusto(equipamento.Id, equipamento.CustoDiario);
+        Console.WriteLine(equipamento);
+        return await _equipamentoRepo.AlterarCusto(equipamento.EquipamentoId, equipamento.CustoDiario);
     }
 
 }

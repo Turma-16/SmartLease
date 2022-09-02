@@ -48,4 +48,9 @@ public class EquipamentoRepo : IEquipamentoRepo
     {
         return await _contexto._equipamentos.ToListAsync();
     }
+
+    public async Task<Equipamento?> BuscarPorId(int idFuncionario)
+    {
+        return await _contexto._equipamentos.FindAsync(idFuncionario);
+    }
 }

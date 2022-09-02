@@ -14,7 +14,7 @@ public class EquipamentoDTO
     [StringLength(200, ErrorMessage = "A descrição do equipamento deve ter no máximo 200 caracteres.")]
     public string Descricao {get;set;} = null!;
 
-    [Range(0,999.99)]
+    [Range(1,999.99)]
 
     public decimal CustoDiario {get;set;}
 
