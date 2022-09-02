@@ -11,6 +11,7 @@ builder.Services.AddScoped<IFuncionarioRepo, FuncionarioRepo>();
 builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
 builder.Services.AddScoped<IFuncionarioProjetoRepo, FuncionarioProjetoRepo>();
 builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
+builder.Services.AddScoped<IReservaRepo, ReservaRepo>();
 
 builder.Services.AddCors(opcoes => {
     opcoes.AddPolicy("LiberaGeral", politica => {

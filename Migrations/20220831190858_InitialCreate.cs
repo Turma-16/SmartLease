@@ -52,7 +52,7 @@ namespace smartlease.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reserva",
+                name: "_reservas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -120,12 +120,12 @@ namespace smartlease.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reserva_EquipamentoId",
-                table: "Reserva",
+                table: "_reservas",
                 column: "EquipamentoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reserva_FuncionarioId",
-                table: "Reserva",
+                table: "_reservas",
                 column: "FuncionarioId");
         }
 
@@ -135,7 +135,7 @@ namespace smartlease.Migrations
                 name: "FuncionarioProjeto");
 
             migrationBuilder.DropTable(
-                name: "Reserva");
+                name: "_reservas");
 
             migrationBuilder.DropTable(
                 name: "_projetos");
