@@ -8,8 +8,8 @@ public class Reserva {
     public DateTime DataReserva { get; set; }
 
     public int FuncionarioId { get; set; } 
-    public Funcionario? Funcionario { get; set; } = null!;
+    public Funcionario Funcionario { get; set; } = null!;
 
     public int EquipamentoId { get; set; }    
-    public Equipamento? Equipamento { get; set; } = null!;
+    public Equipamento Equipamento { get; set; } = null!;
 }

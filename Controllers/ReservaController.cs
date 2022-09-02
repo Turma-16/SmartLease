@@ -27,16 +27,16 @@ public class ReservaController : ControllerBase
     }
 
     [HttpGet("Listar")] // GET .../Reserva/Listar
-    public async Task<IEnumerable<ReservaDTO>> Listar()
+    public async Task<IEnumerable<Reserva>> Listar()
     {
         var reservas = await _reservaRepo.ListarReservas();
-        return reservas.Select(ReservaDTO.DeEntidadeParaDTO).ToList();
+        // return reservas.Select(ReservaDTO.DeEntidadeParaDTO).ToList();
+        return reservas;
     }
 
     [HttpPost("Cadastrar")] // POST .../Reserva/Cadastrar
     public async Task<bool> Cadastrar(ReservaDTO reservaDTO)
     {    
-
         Funcionario? func = await _funcionarioRepo.buscarPorID(reservaDTO.FuncionarioId);
         
         if(func == null){
@@ -48,15 +48,16 @@ public class ReservaController : ControllerBase
         if(equip == null){
             return false;
         }
-            Reserva res = new Reserva(){
-                Id = reservaDTO.ReservaId,
-                DataReserva = reservaDTO.DataReserva,
-                CustoReserva = reservaDTO.CustoReserva,
-                EquipamentoId = reservaDTO.EquipamentoId,
-                FuncionarioId = reservaDTO.FuncionarioId,
-                Funcionario = func,
-                Equipamento = equip,
-            };
+
+        Reserva res = new Reserva(){
+            Id = reservaDTO.ReservaId,
+            DataReserva = reservaDTO.DataReserva,
+            CustoReserva = reservaDTO.CustoReserva,
+            EquipamentoId = reservaDTO.EquipamentoId,
+            Equipamento = equip,
+            FuncionarioId = reservaDTO.FuncionarioId,
+            Funcionario = func,
+        };
     
         return await _reservaRepo.CadastrarReserva(res);
     }
@@ -69,5 +70,15 @@ public class ReservaController : ControllerBase
         if (reservaCadastrada == null) return false;        
         
         return await _reservaRepo.CancelarReserva(reservaCadastrada);
+    }
+
+    [HttpPost("ValidarData")]
+    public async Task<String> ValidarData(DateTime dataRecebida)
+    {
+        IEnumerable<Reserva> listaDeReservas = await _reservaRepo.ListarReservas();
+
+        Console.WriteLine(dataRecebida);
+
+        return "OK" ;
     }
 }
