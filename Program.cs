@@ -1,5 +1,6 @@
 using SmartLease.Repositories;
 using Microsoft.EntityFrameworkCore;
+using SmartLease.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SmartLeaseContext>(opcoes => {
@@ -11,6 +12,8 @@ builder.Services.AddScoped<IFuncionarioRepo, FuncionarioRepo>();
 builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
 builder.Services.AddScoped<IFuncionarioProjetoRepo, FuncionarioProjetoRepo>();
 builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
+builder.Services.AddScoped<IFuncionarioProjetoService, FuncionarioProjetoService>();
+builder.Services.AddScoped<IReservaRepo, ReservaRepo>();
 
 builder.Services.AddCors(opcoes => {
     opcoes.AddPolicy("LiberaGeral", politica => {
@@ -19,9 +22,6 @@ builder.Services.AddCors(opcoes => {
                 .AllowAnyMethod();
     });
 });
-
-
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
