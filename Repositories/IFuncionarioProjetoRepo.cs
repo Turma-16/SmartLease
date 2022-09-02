@@ -10,5 +10,4 @@ public interface IFuncionarioProjetoRepo {
     Task<FuncionarioProjeto?> buscarFuncionarioEmProjeto(int projetoId, int funcionarioId);
     
     Task<FuncionarioProjeto?> buscaUltimoFuncionarioProjeto(int idFuncionario);
-
 }
