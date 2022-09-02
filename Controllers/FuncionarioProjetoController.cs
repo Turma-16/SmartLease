@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartLease.DTOs;
 using SmartLease.Repositories;
+using Microsoft.AspNetCore.Cors;
 using SmartLease.Models;
 using SmartLease.Services;
 using System;
 namespace smartlease.Controllers;
 
+[EnableCors("LiberaGeral")]
 [ApiController]
 [Route("[controller]")]
 public class FuncionarioProjetoController : ControllerBase
