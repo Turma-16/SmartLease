@@ -28,14 +28,14 @@ public class FuncionarioProjetoController : ControllerBase
         _IFuncionarioProjetoService = funcionarioProjetoService;
     }
 
-    [HttpGet("Listar")] // GET ..../FuncionarioProjeto/Listar
-    public async Task<ActionResult<FuncionariosProjetoResponseDTO>> listarFuncionariosEmProjeto(int projetoId) {
+    [HttpGet("Listar")] // GET ..../FuncionarioProjeto/Listar?projetoId=<projetoId>?allFuncionarios=<false> (se allFuncionarios for true, lista tbm os não-ativos)
+    public async Task<ActionResult<FuncionariosProjetoResponseDTO>> listarFuncionariosEmProjetoAtivo(int projetoId, bool allFuncionarios = false) {
 
         var projeto = await _IProjetoRepo.buscarPorID(projetoId);
 
         if(projeto == null) return BadRequest("Projeto não existe na base de dados");
         
-        var funcionariosProjeto = await _IFuncionarioProjetoRepo.listarFuncionariosEmProjeto(projeto.Id);
+        var funcionariosProjeto = await _IFuncionarioProjetoRepo.listarFuncionariosEmProjeto(projeto.Id, allFuncionarios);
 
         var funcionarios = funcionariosProjeto.Select(funcionarioProjeto => funcionarioProjeto.Funcionario).ToList();
 
@@ -85,5 +85,7 @@ public class FuncionarioProjetoController : ControllerBase
         
         return FuncionarioProjetoDTO.DeEntidadeParaDTO(resposta);        
     }
+
+
 
 }

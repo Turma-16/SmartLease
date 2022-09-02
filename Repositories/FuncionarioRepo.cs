@@ -16,6 +16,16 @@ public class FuncionarioRepo : IFuncionarioRepo {
     return funcionarios;
    }
 
+   public async Task<List<Funcionario>> listarTodosSemProjeto() {
+      var funcionarios = await _contexto._funcionarios
+      .Include("FuncionarioProjetos")
+      .Where(func => func.FuncionarioProjetos == null || func.FuncionarioProjetos.Count == 0)
+      .ToListAsync();
+
+      return funcionarios;
+   }
+
+
    public async Task<Funcionario> cadastrar(Funcionario funcionario) {
       await _contexto._funcionarios.AddAsync(funcionario);
       await _contexto.SaveChangesAsync();

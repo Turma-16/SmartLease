@@ -37,4 +37,12 @@ public class FuncionarioController : ControllerBase
 
         return FuncionarioDTO.DeEntidadeParaDTO(resposta);
     }
+
+    [HttpGet("ListarSemProjeto")] // GET ..../ListarSemProjeto
+    public async Task<ActionResult<List<FuncionarioDTO>>> listarFuncionariosSemProjeto() {
+
+        var funcionarios = await _IFuncionarioRepo.listarTodosSemProjeto();
+
+        return funcionarios.Select(FuncionarioDTO.DeEntidadeParaDTO).ToList();
+    }
 }
