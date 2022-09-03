@@ -4,6 +4,6 @@ namespace SmartLease.Repositories;
 
 public interface IRelatorioRepo {
 
-    Task<Double> consultarCustoTotal(int projetoId);
+    //Task<Double> consultarCustoTotal(int projetoId);
 
 }

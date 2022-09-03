@@ -14,6 +14,7 @@ public class RelatorioRepo : IRelatorioRepo
         _contexto = contexto;
     }
 
+/*
     public async Task<Double> consultarCustoTotal(int projetoId, DateTime mesAnoDesejado)
     {   
         // Retorna custo total do salario
@@ -54,6 +55,7 @@ public class RelatorioRepo : IRelatorioRepo
             return false;
         }
     }
+*/
 
     public async Task<IEnumerable<Reserva>> ListarReservas()
     {

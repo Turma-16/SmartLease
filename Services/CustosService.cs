@@ -16,37 +16,78 @@ public class CustosService : ICustosService {
         _IFuncionarioProjetoRepo = funcionarioProjetoRepo;
     }
 
-    public async Task<List<CustoMensalDTO>> verificaProjetosDeFuncionario(Projeto projeto) {
+    public async Task<List<CustoMensalDTO>> custosMensaisDeProjeto(Projeto projeto, DateTime dataInicialBusca, DateTime dataFinalBusca) {
 
-        var response = new List<CustoMensalDTO>();
+      return await _somaCustosDeProjetoEmPeriodo(projeto, dataInicialBusca, dataFinalBusca);
+    }
 
-        var primeiraDataTrabalhadaProjeto = await _IFuncionarioProjetoRepo.buscaPrimeiraDataTrabalhadaProjeto(projeto.Id);
+/* Essa função usa como dataInicial do relatorio a primeira data em q o projeto foi ativo, e ultima data 12 meses depois ou  now(), o que vier primeiro
+  A diferença entre custosMensaisDeProjetoEmPeriodoAtivo e custosMensaisDeProjeto é que custosMensaisDeProjetoEmPeriodoAtivo, se algum dia tiver sido ativa, 
+  retornara a resposta a partir dessa data, não requere parâmetros adicionais e evita buscas em meses não ativos. 
+  custosMensaisDeProjeto é para fins de relatório, com parâmetros de datas cuja resposta pode ser vazia (o que é útil no gráfico).
+*/
+    public async Task<List<CustoMensalDTO>> custosMensaisDeProjetoEmPeriodoAtivo(Projeto projeto) {
+
+        var busca_primeiraDataTrabalhadaProjeto = await _IFuncionarioProjetoRepo.buscaPrimeiraDataTrabalhadaProjeto(projeto.Id);
         
-        var ultimaDataTrabalhadaProjeto = await _IFuncionarioProjetoRepo.buscaUltimaDataTrabalhadaProjeto(projeto.Id);
+        if(!busca_primeiraDataTrabalhadaProjeto.HasValue) return new List<CustoMensalDTO>();
+        
+        var primeiraData = busca_primeiraDataTrabalhadaProjeto.Value;
+        
+        var ultimaData = getUltimaDataDefault(primeiraData); // determina limite do relatório. ou a data atual ou 12 meses depois da primeira data, o que vier primeiro.
+
+        //se ainda temos funcionarios cuja dataSaida == null
+        var busca_ehProjetoAtivo = await _IFuncionarioProjetoRepo.ehProjetoAtivo(projeto.Id);
+
+        if(!busca_ehProjetoAtivo) {
+
+          var busca_ultimaDataTrabalhadaProjeto = await _IFuncionarioProjetoRepo.buscaUltimaDataTrabalhadaProjeto(projeto.Id);
+
+          if(busca_ultimaDataTrabalhadaProjeto.HasValue)
+            ultimaData = busca_ultimaDataTrabalhadaProjeto.Value;
+        }
+
+        return await _somaCustosDeProjetoEmPeriodo(projeto, primeiraData, ultimaData);
+    }
+
+    /* Essa função é pra ser chamada somente ao possuir um período de datas em que sabemos que existiam funcionários escritos no projeto! */
+    private async Task<List<CustoMensalDTO>> _somaCustosDeProjetoEmPeriodo(Projeto projeto, DateTime dataInicialBusca, DateTime dataFinalBusca) {        
 
         var custoTotalMensalProjeto = 0M;
+        var response = new List<CustoMensalDTO>();
 
-        for (int i = primeiraDataTrabalhadaProjeto; i = ultimaDataTrabalhadaProjeto.AddMonth(1); i.AddMonth(1)) 
+        if(dataInicialBusca.Month > dataFinalBusca.Month) return response;
+
+        for (DateTime i = dataInicialBusca; i <= dataFinalBusca; i = i.AddMonths(1)) 
         {
           custoTotalMensalProjeto = 0M;
 
           var funcionariosAtivosEmData = await _IFuncionarioProjetoRepo.buscaFuncionariosAtivosEmData(projeto.Id, i);
           
           foreach (var f in funcionariosAtivosEmData) {
-            custoTotalMensalProjeto += funcionariosAtivosEmData.Salario;
+            custoTotalMensalProjeto += f.Salario;
           }
 
           response.Add(CustoMensalDTO.DeEntidadeParaDTO(
-            this.dataToString(primeiraDataTrabalhadaProjeto, custoTotalMensalProjeto)));
+              i,
+              this.dataToString(i), 
+              custoTotalMensalProjeto,
+              funcionariosAtivosEmData));
         }
 
         return response;
     }
 
     public string dataToString(DateTime data) {
-      return data.ToString("MM/yyyy");
+      return data.ToString("MMMM yyyy");
+    }
+
+    public DateTime minData(DateTime data1, DateTime data2) {
+      return data1 < data2 ? data1 : data2;
+    }
+
+    public DateTime getUltimaDataDefault(DateTime primeiraData) {
+      return minData(DateTime.Now, primeiraData.AddMonths(12));
     }
 
 }
-Array.Sort( myKeys, myValues, 1, 3 );
-      Console.WriteLine( "" );

@@ -6,13 +6,21 @@ namespace SmartLease.DTOs;
 
 public class CustoMensalDTO
 {
-    public string Data {get;set;}
+    public string DataStr {get;set;} = null!;
+    public DateTime Data {get;set;}
     public decimal Custo {get;set;}
 
-    public static CustoMensalDTO DeEntidadeParaDTO(string data, decimal custo) {
+    public List<FuncionarioDTO> Funcionarios{get;set;} = null!;
+
+    public static CustoMensalDTO DeEntidadeParaDTO(DateTime data, string dataStr, decimal custo, List<Funcionario>? funcionarios) {
+      var listFuncionarios = funcionarios != null 
+                            ? funcionarios.Select(FuncionarioDTO.DeEntidadeParaDTO).ToList() 
+                            : new List<FuncionarioDTO>();
       return new CustoMensalDTO {
+        DataStr = dataStr,
         Data = data,
-        Custo = custo
+        Custo = custo,
+        Funcionarios = listFuncionarios
       };
     }
 

@@ -4,7 +4,6 @@ using SmartLease.Repositories;
 using Microsoft.AspNetCore.Cors;
 using SmartLease.Models;
 using SmartLease.Services;
-using System;
 namespace smartlease.Controllers;
 
 [EnableCors("LiberaGeral")]
