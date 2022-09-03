@@ -55,7 +55,8 @@ public async Task<FuncionarioProjeto?> buscaUltimoFuncionarioProjeto(int idFunci
    if (funcionario!.FuncionarioProjetos != null) { // apesar desse warning, conferimos antes se o func existe.
 
       var funcProj = funcionario.FuncionarioProjetos.OrderByDescending(funcproc => funcproc.DataSaida);
-      return funcProj.ElementAt(0);
+      
+    return funcProj.ElementAtOrDefault(0);
    }
    return null;
  }

@@ -57,6 +57,7 @@ public class FuncionarioProjetoController : ControllerBase
         funcionarioProjeto.Ativo = false;
         funcionarioProjeto.DataSaida = DateTime.Now.AddMinutes(5);
 
+        var funcionarioDesativado = _IFuncionarioProjetoRepo.desativar(funcionarioProjeto);
         return FuncionarioProjetoDTO.DeEntidadeParaDTO(funcionarioProjeto);
     }
 
