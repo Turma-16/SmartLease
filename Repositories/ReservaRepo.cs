@@ -20,11 +20,9 @@ public class ReservaRepo : IReservaRepo
         Reserva? reservaNoMesmoDia = _contexto._reservas.FirstOrDefault( 
             r => (r.DataReserva == reserva.DataReserva && 
                     r.EquipamentoId == reserva.EquipamentoId));
-        
-        Console.WriteLine("aqui 2");
 
-        if(reservaNoMesmoDia != null || reserva.DataReserva < DateTime.Now.Date) { return false; }
-        Console.WriteLine("aqui 3");
+         if(reservaNoMesmoDia != null || reserva.DataReserva < DateTime.Now.Date) { return false; }
+
         try{
             await _contexto._reservas.AddAsync(reserva); 
             await _contexto.SaveChangesAsync();

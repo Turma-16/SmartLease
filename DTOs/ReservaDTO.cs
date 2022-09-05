@@ -5,10 +5,9 @@ namespace SmartLease.DTOs;
 public class ReservaDTO
 {
     public int ReservaId {get;set;}
-    [Range(1,100)]
+    
     public int FuncionarioId {get;set;}
-
-    [Range(1,100)]
+    
     public int EquipamentoId {get;set;}
 
     [Range(1,999.99)]
