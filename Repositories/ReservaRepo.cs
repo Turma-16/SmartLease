@@ -15,12 +15,16 @@ public class ReservaRepo : IReservaRepo
 
     public async Task<bool> CadastrarReserva(Reserva reserva)
     {   
+        Console.WriteLine("aqui 1");
+
         Reserva? reservaNoMesmoDia = _contexto._reservas.FirstOrDefault( 
             r => (r.DataReserva == reserva.DataReserva && 
                     r.EquipamentoId == reserva.EquipamentoId));
+        
+        Console.WriteLine("aqui 2");
 
         if(reservaNoMesmoDia != null || reserva.DataReserva < DateTime.Now.Date) { return false; }
-
+        Console.WriteLine("aqui 3");
         try{
             await _contexto._reservas.AddAsync(reserva); 
             await _contexto.SaveChangesAsync();
