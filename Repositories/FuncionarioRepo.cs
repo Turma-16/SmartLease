@@ -22,8 +22,9 @@ public class FuncionarioRepo : IFuncionarioRepo {
       return funcionario;
    }
 
-   public async Task<Funcionario?> buscarPorID(int idFuncionario) {
-      var funcionario = await _contexto._funcionarios.FindAsync(idFuncionario);
-      return funcionario;
-   }
+ public async Task<Funcionario?> buscarPorID(int idFuncionario) {
+    var funcionario = await _contexto._funcionarios.FindAsync(idFuncionario);
+    return funcionario;
+ }
+ 
 }
