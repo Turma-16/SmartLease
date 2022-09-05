@@ -55,7 +55,7 @@ public class ReservaController : ControllerBase
             EquipamentoId = reservaDTO.EquipamentoId,
             Equipamento = equip,
             FuncionarioId = reservaDTO.FuncionarioId,
-            Funcionario = func,
+            Funcionario = func
         };
 
         bool operacao = await _reservaRepo.CadastrarReserva(res);

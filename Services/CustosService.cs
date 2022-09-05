@@ -8,7 +8,6 @@ public class CustosService : ICustosService {
 
     private readonly ILogger<FuncionarioProjetoService> _logger;
     private readonly IFuncionarioProjetoRepo _IFuncionarioProjetoRepo;
-    private readonly IReservaRepo _IReservaRepo;
 
     public CustosService(ILogger<FuncionarioProjetoService> logger, IFuncionarioProjetoRepo funcionarioProjetoRepo)
     {
@@ -54,7 +53,6 @@ public class CustosService : ICustosService {
     private async Task<List<CustoMensalDTO>> _somaCustosDeProjetoEmPeriodo(Projeto projeto, DateTime dataInicialBusca, DateTime dataFinalBusca) {        
 
         var custoTotalMensalProjeto = 0M;
-        var TodasReservas = await _IReservaRepo.ListarReservas();
         var response = new List<CustoMensalDTO>();
 
         if(dataInicialBusca.Month > dataFinalBusca.Month) return response;
@@ -64,23 +62,28 @@ public class CustosService : ICustosService {
           custoTotalMensalProjeto = 0M;
 
           var funcionariosAtivosEmData = await _IFuncionarioProjetoRepo.buscaFuncionariosAtivosEmData(projeto.Id, i);
-          
+          List <Reserva> reservasEmData = new List<Reserva>();
 
-          foreach (var f in funcionariosAtivosEmData) {
-            custoTotalMensalProjeto += f.Salario;
-            
-            foreach(Reserva reserva in TodasReservas){
-              if(reserva.FuncionarioId == f.Id && (reserva.DataReserva >= dataInicialBusca && reserva.DataReserva <= dataFinalBusca)){
-                custoTotalMensalProjeto += reserva.CustoReserva;
+            foreach (var f in funcionariosAtivosEmData) {
+              custoTotalMensalProjeto += f.Salario;
+              
+              if(f.Reservas != null) {
+                foreach(Reserva reserva in f.Reservas) {
+                  if(reserva.DataReserva >= dataInicialBusca && reserva.DataReserva <= dataFinalBusca)
+                  {
+                    reservasEmData.Add(reserva);
+                    custoTotalMensalProjeto += reserva.CustoReserva;
+                  }
+                }
               }
-            }
           }
 
           response.Add(CustoMensalDTO.DeEntidadeParaDTO(
               i,
               this.dataToString(i), 
               custoTotalMensalProjeto,
-              funcionariosAtivosEmData));
+              funcionariosAtivosEmData,
+              reservasEmData));
         }
 
         return response;

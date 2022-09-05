@@ -25,7 +25,7 @@ public class CustoController : ControllerBase
     }
 
     [HttpGet("Listar")] // GET .../Custo/Listar
-    public async Task<ActionResult<List<CustoMensalDTO>>> CustosProjeto(int projetoId, [FromBody] DateTime dataInicialBusca, [FromBody] DateTime dataFinalBusca)
+    public async Task<ActionResult<List<CustoMensalDTO>>> CustosProjeto(int projetoId, DateTime dataInicialBusca,  DateTime dataFinalBusca)
     {
         var projeto = await _IProjetoRepo.buscarPorID(projetoId);
 
@@ -33,7 +33,7 @@ public class CustoController : ControllerBase
 
         return await _ICustosService.custosMensaisDeProjeto(projeto, dataInicialBusca, dataFinalBusca);
     }
-    
+
     [HttpGet("ListarPeriodoAtivo")] // GET .../Custo/ListarPeriodoAtivo
     public async Task<ActionResult<List<CustoMensalDTO>>> CustosProjeto(int projetoId)
     {
@@ -43,7 +43,4 @@ public class CustoController : ControllerBase
 
         return await _ICustosService.custosMensaisDeProjetoEmPeriodoAtivo(projeto);
     }
-
-
-
 }
