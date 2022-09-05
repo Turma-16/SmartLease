@@ -10,10 +10,10 @@ public FuncionarioProjetoRepo(SmartLeaseContext contexto) {
     _contexto = contexto;
 }
 
- public async Task<List<FuncionarioProjeto>> listarFuncionariosEmProjeto (int projetoId) {
+ public async Task<List<FuncionarioProjeto>> listarFuncionariosEmProjeto (int projetoId, bool allFuncionarios) {
     
     var funcionarioprojeto = await _contexto._funcionarios_projetos
-    .Where(funcproj => funcproj.ProjetoId == projetoId).Include("Funcionario").ToListAsync();
+    .Where(funcproj => funcproj.ProjetoId == projetoId && (allFuncionarios || funcproj.Ativo)).Include("Funcionario").ToListAsync();
     return funcionarioprojeto;
  }
 
@@ -93,6 +93,14 @@ public async Task<FuncionarioProjeto?> buscaUltimoFuncionarioProjeto(int idFunci
       return funcProj.ElementAtOrDefault(0);
    }
    return null;
+ }
+
+ public async Task<List<FuncionarioProjeto>> listarFuncionariosEmProjetoAtivo (int projetoId) {
+
+   var funcionarioprojeto = await _contexto._funcionarios_projetos
+    .Where(funcproj => funcproj.ProjetoId == projetoId && funcproj.Ativo == true).Include("Funcionario").ToListAsync();
+    return funcionarioprojeto;
+
  }
 
 }
