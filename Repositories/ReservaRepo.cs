@@ -19,7 +19,7 @@ public class ReservaRepo : IReservaRepo
             r => (r.DataReserva == reserva.DataReserva && 
                     r.EquipamentoId == reserva.EquipamentoId));
 
-        if(reservaNoMesmoDia != null || reserva.DataReserva < DateTime.Now.Date) { return false; }
+         if(reservaNoMesmoDia != null || reserva.DataReserva < DateTime.Now.Date) { return false; }
 
         try{
             await _contexto._reservas.AddAsync(reserva); 

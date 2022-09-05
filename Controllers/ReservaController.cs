@@ -27,47 +27,60 @@ public class ReservaController : ControllerBase
     }
 
     [HttpGet("Listar")] // GET .../Reserva/Listar
-    public async Task<IEnumerable<ReservaDTO>> Listar()
+    public async Task<IEnumerable<Reserva>> Listar()
     {
         var reservas = await _reservaRepo.ListarReservas();
-        return reservas.Select(ReservaDTO.DeEntidadeParaDTO).ToList();
+        // return reservas.Select(ReservaDTO.DeEntidadeParaDTO).ToList();
+        return reservas;
     }
 
-    [HttpPost("Cadastrar")] // POST .../Reserva/Cadastrar
-    public async Task<bool> Cadastrar(ReservaDTO reservaDTO)
-    {    
 
+    [HttpPost("Cadastrar")] // POST .../Reserva/Cadastrar
+    public async Task<string> Cadastrar(ReservaDTO reservaDTO)
+    {   
         Funcionario? func = await _funcionarioRepo.buscarPorID(reservaDTO.FuncionarioId);
-        
         if(func == null){
-            return false;
+            return ("Funcionario não encontrado");
         }
        
         Equipamento? equip = await _equipamentoRepo.BuscarPorId(reservaDTO.EquipamentoId);
-
         if(equip == null){
-            return false;
+            return ("Equipamento não encontrado");
         }
-            Reserva res = new Reserva(){
-                Id = reservaDTO.ReservaId,
-                DataReserva = reservaDTO.DataReserva,
-                CustoReserva = reservaDTO.CustoReserva,
-                EquipamentoId = reservaDTO.EquipamentoId,
-                FuncionarioId = reservaDTO.FuncionarioId,
-                Funcionario = func,
-                Equipamento = equip,
-            };
-    
-        return await _reservaRepo.CadastrarReserva(res);
+
+        Reserva res = new Reserva(){
+            Id = reservaDTO.ReservaId,
+            DataReserva = reservaDTO.DataReserva,
+            CustoReserva = reservaDTO.CustoReserva,
+            EquipamentoId = reservaDTO.EquipamentoId,
+            Equipamento = equip,
+            FuncionarioId = reservaDTO.FuncionarioId,
+            Funcionario = func,
+        };
+
+        bool operacao = await _reservaRepo.CadastrarReserva(res);
+        if(!operacao)
+        {
+            return ("Falha ao reservar");
+        }
+
+        return "Reserva realizada com sucesso!";
     }
 
-    [HttpDelete("Cancelar")] // DELETE .../Reserva/Cancelar
-    public async Task<bool> Cancelar(ReservaDTO reservaParaCancelar)
+    public class ObjetoComId
+    {
+        public int Id {get; set;}
+    }
+
+    [HttpPost("Cancelar")] // POST .../Reserva/Cancelar
+    public async Task<bool> Cancelar(ObjetoComId reserva)
     {   
-        Reserva? reservaCadastrada = await _reservaRepo.BuscarPorId(reservaParaCancelar.ReservaId);
+        Console.WriteLine(reserva.Id);
+        Reserva? reservaCadastrada = await _reservaRepo.BuscarPorId(reserva.Id);
         
         if (reservaCadastrada == null) return false;        
         
         return await _reservaRepo.CancelarReserva(reservaCadastrada);
+       
     }
 }
