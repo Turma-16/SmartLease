@@ -21,12 +21,19 @@ public FuncionarioProjetoRepo(SmartLeaseContext contexto) {
     await _contexto._funcionarios_projetos.AddAsync(funcionarioProjeto);
     await _contexto.SaveChangesAsync();
     return funcionarioProjeto;
- } 
- public async Task<Funcionario?> buscarPorID(int idFuncionario) {
+ }
 
-    var funcionario = await _contexto._funcionarios.FindAsync(idFuncionario);
-    return funcionario;
- } 
+public async Task<List<Funcionario>> buscaFuncionariosAtivosEmData(int projetoId, DateTime data) {
+   var funcionariosProjeto = await _contexto._funcionarios_projetos
+                              .Include("Funcionario")
+                              .Where(funcproj =>
+                                 funcproj.ProjetoId == projetoId
+                                 && data.Month >= funcproj.DataEntrada.Month
+                                 && (!funcproj.DataSaida.HasValue || data.Month <= funcproj.DataSaida.Value.Month)
+                              ).ToListAsync();
+
+   return funcionariosProjeto.Select(funcproj => funcproj.Funcionario).ToList();
+}
 
  public async Task<FuncionarioProjeto> desativar(FuncionarioProjeto funcionarioProjeto) {
 
@@ -34,7 +41,35 @@ public FuncionarioProjetoRepo(SmartLeaseContext contexto) {
    return funcionarioProjeto;
     
  }
+public async Task<DateTime?> buscaPrimeiraDataTrabalhadaProjeto(int projetoId) {
+   var funcionarioProjeto = await _contexto._funcionarios_projetos
+      .Where(funcproj => funcproj.ProjetoId == projetoId)
+      .OrderBy(funcproj => funcproj.DataEntrada)
+      .FirstOrDefaultAsync();
 
+   return funcionarioProjeto?.DataEntrada;
+ }
+
+ public async Task<DateTime?> buscaUltimaDataTrabalhadaProjeto(int projetoId) {
+   var funcionarioProjeto = await _contexto._funcionarios_projetos
+      .Where(funcproj => funcproj.ProjetoId == projetoId)
+      .OrderByDescending(funcproj => funcproj.DataSaida)
+      .FirstOrDefaultAsync();
+
+   return funcionarioProjeto?.DataSaida;
+ }
+
+  public async Task<bool> ehProjetoAtivo(int projetoId) {
+   var funcionariosProjeto = await _contexto._funcionarios_projetos
+                           .Where(funcproj => 
+                              funcproj.ProjetoId == projetoId && 
+                              funcproj.DataSaida == null).ToListAsync();
+
+   return funcionariosProjeto.Any();
+ }
+
+
+ 
   public async Task<FuncionarioProjeto?> buscarFuncionarioEmProjeto(int idProjeto,int idFuncionario) {
 
     var funcionarioProjeto = await _contexto._funcionarios_projetos

@@ -9,7 +9,9 @@ public interface IFuncionarioProjetoRepo {
     Task<FuncionarioProjeto> desativar(FuncionarioProjeto funcionarioProjeto);
     Task<FuncionarioProjeto?> buscarFuncionarioEmProjeto(int projetoId, int funcionarioId);
     Task<FuncionarioProjeto?> buscaUltimoFuncionarioProjeto(int idFuncionario);
-    
+    Task<List<Funcionario>> buscaFuncionariosAtivosEmData(int projetoId, DateTime data);
+    Task<DateTime?> buscaPrimeiraDataTrabalhadaProjeto(int projetoId);
+    Task<DateTime?> buscaUltimaDataTrabalhadaProjeto(int projetoId);
+    Task<bool> ehProjetoAtivo(int projetoId);
     Task<List<FuncionarioProjeto>> listarFuncionariosEmProjetoAtivo (int projetoId);
-
 }
