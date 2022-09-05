@@ -24,14 +24,15 @@ public class CustoController : ControllerBase
         _ICustosService = custosService;
     }
 
-    [HttpGet("Listar")] // GET .../Custo/Listar
-    public async Task<ActionResult<List<CustoMensalDTO>>> CustosProjeto(int projetoId, DateTime dataInicialBusca,  DateTime dataFinalBusca)
-    {
-        var projeto = await _IProjetoRepo.buscarPorID(projetoId);
+    [HttpPost("Listar")] // GET .../Custo/Listar
+    public async Task<ActionResult<List<CustoMensalDTO>>> CustosProjeto([FromBody] DatasDTO request)
+    {   
 
+        var projeto = await _IProjetoRepo.buscarPorID(request.ProjetoId);
+        
         if(projeto == null) return BadRequest("Projeto não existe na base de dados");
 
-        return await _ICustosService.custosMensaisDeProjeto(projeto, dataInicialBusca, dataFinalBusca);
+        return await _ICustosService.custosMensaisDeProjeto(projeto, request.DataInicio, request.DataFinal);
     }
 
     [HttpGet("ListarPeriodoAtivo")] // GET .../Custo/ListarPeriodoAtivo
