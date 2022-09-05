@@ -13,6 +13,7 @@ builder.Services.AddScoped<IProjetoRepo, ProjetoRepo>();
 builder.Services.AddScoped<IFuncionarioProjetoRepo, FuncionarioProjetoRepo>();
 builder.Services.AddScoped<IEquipamentoRepo, EquipamentoRepo>();
 builder.Services.AddScoped<IFuncionarioProjetoService, FuncionarioProjetoService>();
+builder.Services.AddScoped<ICustosService, CustosService>();
 builder.Services.AddScoped<IReservaRepo, ReservaRepo>();
 
 builder.Services.AddCors(opcoes => {
