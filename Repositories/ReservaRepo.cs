@@ -15,7 +15,6 @@ public class ReservaRepo : IReservaRepo
 
     public async Task<bool> CadastrarReserva(Reserva reserva)
     {   
-        Console.WriteLine("aqui 1");
 
         Reserva? reservaNoMesmoDia = _contexto._reservas.FirstOrDefault( 
             r => (r.DataReserva == reserva.DataReserva && 
@@ -56,6 +55,11 @@ public class ReservaRepo : IReservaRepo
     public async Task<Reserva?> BuscarPorId(int idReserva)
     {
         return await _contexto._reservas.FindAsync(idReserva);
+    }
+    public async Task<List<Reserva>?> BuscarPorDataEFuncionario(DateTime data, int idFuncionario)
+    {
+        return await _contexto._reservas.Where(r => 
+            r.DataReserva == data && r.FuncionarioId == idFuncionario).ToListAsync();    
     }
    
 }

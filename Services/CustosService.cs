@@ -8,11 +8,13 @@ public class CustosService : ICustosService {
 
     private readonly ILogger<FuncionarioProjetoService> _logger;
     private readonly IFuncionarioProjetoRepo _IFuncionarioProjetoRepo;
+    private readonly IReservaRepo _IReservaRepo;
 
-    public CustosService(ILogger<FuncionarioProjetoService> logger, IFuncionarioProjetoRepo funcionarioProjetoRepo)
+    public CustosService(ILogger<FuncionarioProjetoService> logger, IFuncionarioProjetoRepo funcionarioProjetoRepo, IReservaRepo reservaRepo)
     {
         _logger = logger;
         _IFuncionarioProjetoRepo = funcionarioProjetoRepo;
+        _IReservaRepo = reservaRepo;
     }
 
     public async Task<List<CustoMensalDTO>> custosMensaisDeProjeto(Projeto projeto, DateTime dataInicialBusca, DateTime dataFinalBusca) {
@@ -66,9 +68,13 @@ public class CustosService : ICustosService {
 
             foreach (var f in funcionariosAtivosEmData) {
               custoTotalMensalProjeto += f.Salario;
+
+              var reservas = await _IReservaRepo.BuscarPorDataEFuncionario(i, f.Id);
               
-              if(f.Reservas != null) {
-                foreach(Reserva reserva in f.Reservas) {
+              if(reservas != null) {
+
+                foreach(Reserva reserva in reservas) {
+                  
                   if(reserva.DataReserva >= dataInicialBusca && reserva.DataReserva <= dataFinalBusca)
                   {
                     reservasEmData.Add(reserva);
